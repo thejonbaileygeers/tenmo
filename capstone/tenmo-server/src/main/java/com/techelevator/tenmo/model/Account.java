@@ -1,21 +1,22 @@
 package com.techelevator.tenmo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.HashSet;
-import java.util.Set;
-
 public class Account {
     private int accountId;
     private double accountBalance;
+    private int userId;
 
     public Account() {
     }
 
-    public Account(int accountId, double accountBalance) {
+    public Account(int accountId, double accountBalance, int userId) {
         this.accountId = accountId;
         this.accountBalance = accountBalance;
+        this.userId = userId;
     }
+
+    public int getUserId() {return userId; }
+
+    public void setUserId(int userId) {this.userId = userId;}
 
     public int getAccountId() {
         return accountId;
@@ -39,6 +40,7 @@ public class Account {
         return "Account{" +
                 "id =" + accountId +
                 ", balance ='" + accountBalance +
+                ", user =" + userId +
                 '}';
     }
 }

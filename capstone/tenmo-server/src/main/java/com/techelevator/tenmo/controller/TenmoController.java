@@ -4,11 +4,9 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -31,19 +29,24 @@ public class TenmoController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/transfers", method = RequestMethod.POST)
-    public Transfer authenticatedUserTransferTo(@Valid @RequestBody Transfer newTransfer) {
-        int senderId = newTransfer.getFromAccount();
-        int receiverId = newTransfer.getToAccount();
+    public TransferDto authenticatedUserTransferTo(@Valid @RequestBody TransferDto newTransfer) {
+        int senderUserId = newTransfer.getUserId();
+        int receiverUserId = newTransfer.getUserId();
+        Account senderAccountId = accountDao.getAccountBalanceAndId(senderUserId);
+        Account receiverAccountId = accountDao.getAccountBalanceAndId(receiverUserId);
         double amount = newTransfer.getTransferAmount();
+        TransferDto finalTransfer = null;
 
 
-        if (senderId != receiverId) {
-            if (amount >= accountDao.getAccountBalanceAndId())
+        if (senderUserId != receiverUserId) {
+            if (amount < senderAccountId.getAccountBalance() && amount > 0) {
                 return transferDao.createTransaction(newTransfer);
         } else
             throw new IllegalArgumentException("Transaction cannot be completed.");
     }
+        return transferDao.createTransaction(newTransfer);
 
+    }
 
 
 

@@ -21,7 +21,7 @@ CREATE TABLE tenmo_user (
 
 CREATE TABLE user_account (
     account_id serial NOT NULL,
-    balance DECIMAL(13, 2) DEFAULT(1000),
+    balance double DEFAULT(1000),
     user_id int NOT NULL,
     CONSTRAINT PK_user_account PRIMARY KEY (account_id),
     CONSTRAINT FK_tenmo_user FOREIGN KEY (user_id) REFERENCES tenmo_user(user_id)
@@ -29,7 +29,7 @@ CREATE TABLE user_account (
 
 CREATE TABLE transfers (
     transfer_id serial NOT NULL,
-    amount DECIMAL(13,2) NOT NULL,
+    amount double NOT NULL,
     transfer_to int NOT NULL,
     transfer_from int NOT NULL,
     CONSTRAINT PK_transfer PRIMARY KEY (transfer_id),
@@ -37,6 +37,6 @@ CREATE TABLE transfers (
     CONSTRAINT FK_transfer_to FOREIGN KEY (transfer_to) REFERENCES user_account(account_id)
 );
 
---  rollback;
+-- rollback;
 
 COMMIT;
