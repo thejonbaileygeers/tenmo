@@ -12,5 +12,7 @@ public interface AccountDao {
 
     Account getAccountBalanceAndId(int accountId);
 
+    Account createAccount(Account newAccount);
+
 
 }

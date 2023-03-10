@@ -12,4 +12,8 @@ public interface TransferDao {
     void senderTransaction(double amount, int senderId);
 
     List<Transfer> transferHistory();
+
+    Transfer createTransaction(Transfer transfer);
+
+    Transfer getTransfer(int transferId);
 }

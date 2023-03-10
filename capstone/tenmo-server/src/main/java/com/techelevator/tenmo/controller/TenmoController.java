@@ -30,12 +30,21 @@ public class TenmoController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/transfers/{id}", method = RequestMethod.POST)
-    public Transfer authenticatedUserTransferTo(@PathVariable int id) {
-        double receiversAccountBalance = new Account().getAccountBalance();
-        double sendersAccountBalance = new Account().getAccountBalance();
-        if ()
+    @RequestMapping(value = "/transfers", method = RequestMethod.POST)
+    public Transfer authenticatedUserTransferTo(@Valid @RequestBody Transfer newTransfer) {
+        int senderId = newTransfer.getFromAccount();
+        int receiverId = newTransfer.getToAccount();
+        double amount = newTransfer.getTransferAmount();
+
+
+        if (senderId != receiverId) {
+            if (amount >= accountDao.getAccountBalanceAndId())
+                return transferDao.createTransaction(newTransfer);
+        } else
+            throw new IllegalArgumentException("Transaction cannot be completed.");
     }
+
+
 
 
 }
